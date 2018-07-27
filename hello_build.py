@@ -3,17 +3,19 @@
 from cffi import FFI
 ffibuilder = FFI()
 
-ffibuilder.set_source("_hello",
-    r"""
-    char const* greet()
-    {
-        return "Greetings!";
-    }
-""",
-    libraries=[])
+cpp = r"""
+#include <iostream>
+int greet()
+{
+    std::cout << "Hello, World!";
+    return 0;
+}
+"""
+
+ffibuilder.set_source("_hello", cpp, libraries=['iostream.h'])
 
 ffibuilder.cdef("""
-    char const *greet(void);
+    int const *greet(void);
 """)
 
 if __name__ == "__main__":
